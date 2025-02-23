@@ -1,17 +1,23 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:pinput/pinput.dart';
+import 'package:swift/pages/driverSection/Home/homePage.dart';
+import 'package:swift/pages/driverSection/authtication/phoneAuth.dart';
 import 'package:swift/pages/driverSection/onboarding/onboardingDetails.dart';
 
 class OTPAuth extends StatefulWidget {
   final String phoneNo;
 
+  final String countryCode;
+
   const OTPAuth({
     super.key,
     required this.phoneNo,
+    required this.countryCode,
   });
 
   @override
@@ -22,17 +28,90 @@ class _OTPAuthState extends State<OTPAuth> {
   final controller = TextEditingController();
   final focusNode = FocusNode();
   var verificationCode;
+  bool isVerifyingOTP = false;
 
   void otpCheck(val) {
     if (val.length == 6) {
-      Navigator.of(context).push(
-        PageTransition(
-            type: PageTransitionType.rightToLeftJoined,
-            childCurrent: widget,
-            duration: const Duration(milliseconds: 120),
-            reverseDuration: const Duration(milliseconds: 120),
-            child: const OnboardingDetails()),
-      );
+      verifyOTPViaFirebase();
+      // Navigator.of(context).push(
+      //   PageTransition(
+      //       type: PageTransitionType.rightToLeftJoined,
+      //       childCurrent: widget,
+      //       duration: const Duration(milliseconds: 120),
+      //       reverseDuration: const Duration(milliseconds: 120),
+      //       child: const OnboardingDetails()),
+      // );
+    }
+  }
+
+  Future<List<String>> getAllDocumentNames() async {
+    final collectionReference =
+        FirebaseFirestore.instance.collection('DriversData');
+    final querySnapshot = await collectionReference.get();
+
+    final documentNames = querySnapshot.docs.map((doc) => doc.id).toList();
+
+    return documentNames;
+  }
+
+  FirebaseAuth auth = FirebaseAuth.instance;
+  void verifyOTPViaFirebase() async {
+    setState(() {
+      isVerifyingOTP = true;
+    });
+    try {
+      PhoneAuthCredential credential = PhoneAuthProvider.credential(
+          verificationId: PhoneAuth.verificationId, smsCode: verificationCode);
+
+      // Sign the user in (or link) with the credential
+      await auth.signInWithCredential(credential);
+      List<String> documentNames = await getAllDocumentNames();
+
+      if (documentNames.contains(widget.phoneNo)) {
+        setState(() {
+          isVerifyingOTP = false;
+        });
+
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
+          (route) => false,
+        );
+
+        // setPreference(widget.phoneNo);
+        // getPreference();
+      } else {
+        // setState(() {
+        //   OnboradingData.phone = widget.phoneNo;
+        //   OnboradingData.countryCodeInWords =
+        //       OnboardingPhonePage.countryCodeVar;
+        // });
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => const OnboardingDetails()),
+          (route) => false,
+        );
+      }
+    } catch (e) {
+      setState(() {
+        isVerifyingOTP = false;
+      });
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: const Color(0xFFc61a09),
+          elevation: 0,
+          content: Row(
+            children: [
+              Text(
+                "Wrong OTP",
+                style: TextStyle(
+                  fontSize: 15.sp,
+                  color: Colors.white,
+                  fontFamily: "Montserrat-SemiBold",
+                ),
+              )
+            ],
+          )));
     }
   }
 
