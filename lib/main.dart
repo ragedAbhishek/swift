@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:swift/pages/driverSection/authtication/phoneAuth.dart';
 import 'package:swift/pages/splashScreen.dart';
 
 Future<void> main() async {
@@ -14,20 +15,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-          // fontFamily: GoogleFonts.sofiaSans.toString(),
-          // splashColor: Colors.transparent,
-          // highlightColor: Colors.transparent,
-          ),
-      debugShowCheckedModeBanner: false,
-      initialRoute: "/SplashScreen",
-      routes: {
-        // ***************** D O N ' T   R E M O V E   T H E S E  *******************
-        "/SplashScreen": (context) => SplashScreen(),
+    return ScreenUtilInit(
+      builder: (context, child) => MaterialApp(
+        theme: ThemeData(
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+        ),
+        debugShowCheckedModeBanner: false,
+        initialRoute: "/splashScreen",
+        routes: {
+          // ***************** D O N ' T   R E M O V E   T H E S E  *******************
+          "/splashScreen": (context) => const SplashScreen(),
 
-        // ***************** R E M O V E   T H E S E  *******************
-      },
+          // ***************** R E M O V E   T H E S E  *******************
+          "/phoneAuth": (context) => const PhoneAuth(),
+        },
+      ),
+      designSize: const Size(392.72727272727275, 825.4545454545455),
     );
   }
 }

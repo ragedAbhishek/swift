@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:swift/pages/options.dart';
+import 'package:flutter/services.dart';
+import 'package:swift/pages/loginOptionPage.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -10,21 +12,32 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   @override
+  void initState() {
+    checkandNavigate();
+    super.initState();
+  }
+
+  void checkandNavigate() {
+    Timer(const Duration(seconds: 2), () {
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => const LoginOptionPage()));
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      systemNavigationBarColor: Colors.black,
+    ));
     return Scaffold(
+      backgroundColor: Colors.black,
       body: Center(
-        child: Column(
-          children: [
-            Text("This is a splash screen"),
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const OptionPage()));
-                },
-                child: Text("Start"))
-          ],
+        child: Image.asset(
+          "assets/images/bus.png",
+          height: 100,
+          width: 100,
+          fit: BoxFit.cover,
         ),
       ),
     );
