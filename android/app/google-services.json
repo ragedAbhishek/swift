@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "840321672043",
+    "firebase_url": "https://swift-app09-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "swift-app09",
+    "storage_bucket": "swift-app09.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:840321672043:android:8f9cfd85cfb1e6ef36e22e",
+        "android_client_info": {
+          "package_name": "com.driveon.swift"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjrkPf1FJvx_ZxGEQB4HsfAnTZAXmKzgs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
