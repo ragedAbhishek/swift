@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:swift/firebase_options.dart';
-import 'package:swift/pages/driverSection/authtication/phoneAuth.dart';
 import 'package:swift/pages/splashScreen.dart';
 
 Future<void> main() async {
@@ -35,7 +34,6 @@ class MyApp extends StatelessWidget {
               "/splashScreen": (context) => const SplashScreen(),
 
               // ***************** R E M O V E   T H E S E  *******************
-              "/phoneAuth": (context) => const PhoneAuth(),
             },
           ),
       designSize: const Size(392.72727272727275, 825.4545454545455),

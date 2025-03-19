@@ -6,21 +6,25 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pinput/pinput.dart';
 import 'package:swift/pages/driverSection/Home/homePage.dart';
-import 'package:swift/pages/driverSection/authtication/phoneAuth.dart';
-import 'package:swift/pages/driverSection/onboarding/onboardingDetails.dart';
+import 'package:swift/pages/studentSection.dart/pages/studentHomePage.dart';
+import 'package:swift/pages/studentSection.dart/studentAuth/studentPhoneAuth.dart';
 
-class OTPAuth extends StatefulWidget {
+class StudentOTPAuth extends StatefulWidget {
   final String phoneNo;
 
   final String countryCode;
 
-  const OTPAuth({super.key, required this.phoneNo, required this.countryCode});
+  const StudentOTPAuth({
+    super.key,
+    required this.phoneNo,
+    required this.countryCode,
+  });
 
   @override
-  State<OTPAuth> createState() => _OTPAuthState();
+  State<StudentOTPAuth> createState() => _StudentOTPAuthState();
 }
 
-class _OTPAuthState extends State<OTPAuth> {
+class _StudentOTPAuthState extends State<StudentOTPAuth> {
   final controller = TextEditingController();
   final focusNode = FocusNode();
   var verificationCode;
@@ -58,7 +62,7 @@ class _OTPAuthState extends State<OTPAuth> {
     });
     try {
       PhoneAuthCredential credential = PhoneAuthProvider.credential(
-        verificationId: PhoneAuth.verificationId,
+        verificationId: StudentPhoneAuth.verificationId,
         smsCode: verificationCode,
       );
 
@@ -87,7 +91,7 @@ class _OTPAuthState extends State<OTPAuth> {
         // });
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => const OnboardingDetails()),
+          MaterialPageRoute(builder: (context) => const StudentHomePage()),
           (route) => false,
         );
       }
