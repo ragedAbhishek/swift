@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swift/deltaFiles/appControl.dart';
-import 'package:swift/pages/adminSection/adminPages/adminHomePage.dart';
+import 'package:swift/pages/adminSection/adminPages/adminNav.dart';
 
 class AdminOnboardingDone extends StatefulWidget {
   final String phoneNo;
@@ -51,7 +51,7 @@ class _AdminOnboardingDoneState extends State<AdminOnboardingDone> {
     Navigator.pushReplacement(
       // ignore: use_build_context_synchronously
       context,
-      MaterialPageRoute(builder: (context) => AdminHomePage()),
+      MaterialPageRoute(builder: (context) => AdminNav()),
     );
   }
 

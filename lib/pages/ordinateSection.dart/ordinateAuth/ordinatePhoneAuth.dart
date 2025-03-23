@@ -53,7 +53,6 @@ class _OrdinatePhoneAuthState extends State<OrdinatePhoneAuth> {
         .then((docSnapshot) {
           var data = docSnapshot.data();
           var phoneNo = data?["PhoneNo"];
-          print("The phone no. is $phoneNo");
           sendOTPViaFireBase(phoneNo);
         });
   }

@@ -5,15 +5,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:swift/deltaFiles/appControl.dart';
 import 'package:swift/pages/adminSection/adminExtras/addModerator.dart';
+import 'package:swift/pages/adminSection/adminExtras/addOrdinate.dart';
+import 'package:swift/pages/adminSection/adminExtras/addVehicle.dart';
 
-class AdminHomePage extends StatefulWidget {
-  const AdminHomePage({super.key});
+class AdminDriversPage extends StatefulWidget {
+  const AdminDriversPage({super.key});
 
   @override
-  State<AdminHomePage> createState() => _AdminHomePageState();
+  State<AdminDriversPage> createState() => _AdminDriversPageState();
 }
 
-class _AdminHomePageState extends State<AdminHomePage> {
+class _AdminDriversPageState extends State<AdminDriversPage> {
   void navigateToPage(BuildContext context, Widget page, Widget currentPage) {
     Navigator.of(context).push(
       PageTransition(
@@ -61,19 +63,15 @@ class _AdminHomePageState extends State<AdminHomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "$clientName\nHomepage",
+                  "$clientName\nDriver Page",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: "Montserrat-Bold",
                     fontSize: 20.sp,
                   ),
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    navigateToPage(context, AddModerator(), widget);
-                  },
-                  child: Text("Add Moderator"),
-                ),
+
+                ElevatedButton(onPressed: () {}, child: Text("Add Driver")),
               ],
             ),
           ),

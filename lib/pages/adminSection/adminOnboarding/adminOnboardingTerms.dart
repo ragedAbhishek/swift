@@ -335,10 +335,6 @@ Future<void> addClient({
 
     // R E Q U I R E D   D A T A
     "Ordinates": [],
-
-    // S O C I A L   D E T A I L S
-    "InstagramId": "",
-    "EmailId": "",
   };
   await docUser.set(json);
 }

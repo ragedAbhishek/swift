@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:swift/pages/adminSection/adminAuth/adminPhoneAuth.dart';
+import 'package:swift/pages/driverSection/driverAuth/phoneAuth.dart';
 import 'package:swift/pages/ordinateSection.dart/ordinateAuth/clientSelection.dart';
 
 class LoginOptionPage extends StatefulWidget {
@@ -39,7 +40,20 @@ class _LoginOptionPageState extends State<LoginOptionPage> {
                 child: Text("Admin"),
               ),
               ElevatedButton(onPressed: () {}, child: Text("Moderator")),
-              ElevatedButton(onPressed: () {}, child: Text("Driver")),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    PageTransition(
+                      type: PageTransitionType.rightToLeftJoined,
+                      childCurrent: widget,
+                      duration: const Duration(milliseconds: 120),
+                      reverseDuration: const Duration(milliseconds: 120),
+                      child: const DriverPhoneAuth(),
+                    ),
+                  );
+                },
+                child: Text("Driver"),
+              ),
             ],
           ),
         );

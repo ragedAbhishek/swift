@@ -4,16 +4,16 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:swift/deltaFiles/appControl.dart';
-import 'package:swift/pages/adminSection/adminExtras/addModerator.dart';
+import 'package:swift/pages/adminSection/adminExtras/addOrdinate.dart';
 
-class AdminHomePage extends StatefulWidget {
-  const AdminHomePage({super.key});
+class AdminOrdinatesPage extends StatefulWidget {
+  const AdminOrdinatesPage({super.key});
 
   @override
-  State<AdminHomePage> createState() => _AdminHomePageState();
+  State<AdminOrdinatesPage> createState() => _AdminOrdinatesPageState();
 }
 
-class _AdminHomePageState extends State<AdminHomePage> {
+class _AdminOrdinatesPageState extends State<AdminOrdinatesPage> {
   void navigateToPage(BuildContext context, Widget page, Widget currentPage) {
     Navigator.of(context).push(
       PageTransition(
@@ -61,18 +61,19 @@ class _AdminHomePageState extends State<AdminHomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "$clientName\nHomepage",
+                  "$clientName\nOrdinate Page",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: "Montserrat-Bold",
                     fontSize: 20.sp,
                   ),
                 ),
+
                 ElevatedButton(
                   onPressed: () {
-                    navigateToPage(context, AddModerator(), widget);
+                    navigateToPage(context, AddOrdinate(), widget);
                   },
-                  child: Text("Add Moderator"),
+                  child: Text("Add Ordinate"),
                 ),
               ],
             ),

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swift/deltaFiles/appControl.dart';
-import 'package:swift/pages/adminSection/adminPages/adminHomePage.dart';
+import 'package:swift/pages/adminSection/adminPages/adminNav.dart';
 import 'package:swift/pages/loginOptionPage.dart';
 import 'package:swift/pages/ordinateSection.dart/pages/ordinateHomePage.dart';
 
@@ -50,7 +50,7 @@ class _SplashScreenState extends State<SplashScreen> {
           if (mounted) {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => const AdminHomePage()),
+              MaterialPageRoute(builder: (context) => const AdminNav()),
             );
           }
         });
@@ -77,7 +77,7 @@ class _SplashScreenState extends State<SplashScreen> {
       ),
     );
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Color(0xFF266FEF),
       body: Center(
         child: Image.asset(
           "assets/images/bus.png",
