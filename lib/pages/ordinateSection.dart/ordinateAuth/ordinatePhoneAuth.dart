@@ -4,31 +4,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:swift/pages/studentSection.dart/studentAuth/OTPauth.dart';
+import 'package:swift/pages/ordinateSection.dart/ordinateAuth/ordinateOTPauth.dart';
 
-class StudentPhoneAuth extends StatefulWidget {
+class OrdinatePhoneAuth extends StatefulWidget {
   final String clientID;
   final List ordinatesList;
+  final int ordinateIdLength;
 
-  StudentPhoneAuth({
+  OrdinatePhoneAuth({
     super.key,
     required this.clientID,
     required this.ordinatesList,
+    required this.ordinateIdLength,
   });
   static var verificationId;
 
   @override
-  State<StudentPhoneAuth> createState() => _StudentPhoneAuthState();
+  State<OrdinatePhoneAuth> createState() => _OrdinatePhoneAuthState();
 }
 
-class _StudentPhoneAuthState extends State<StudentPhoneAuth> {
+class _OrdinatePhoneAuthState extends State<OrdinatePhoneAuth> {
   GlobalKey<FormState> onboardingPhoneFormKey = GlobalKey<FormState>();
   var ordinateID;
   bool isTen = false;
+
   bool isSendingOTP = false;
 
   void checkordinateID(val) {
-    if (val.length == 5) {
+    if (val.length == widget.ordinateIdLength) {
       setState(() {
         isTen = true;
       });
@@ -74,7 +77,7 @@ class _StudentPhoneAuthState extends State<StudentPhoneAuth> {
         },
         codeSent: (String verificationId, int? resendToken) {
           setState(() {
-            StudentPhoneAuth.verificationId = verificationId;
+            OrdinatePhoneAuth.verificationId = verificationId;
             isSendingOTP = false;
           });
 
@@ -84,7 +87,11 @@ class _StudentPhoneAuthState extends State<StudentPhoneAuth> {
               childCurrent: widget,
               duration: const Duration(milliseconds: 120),
               reverseDuration: const Duration(milliseconds: 120),
-              child: StudentOTPAuth(phoneNo: phoneNo, countryCode: "+91"),
+              child: OrdinateOTPAuth(
+                phoneNo: phoneNo,
+                countryCode: "+91",
+                uniqueID: ordinateID,
+              ),
             ),
           );
         },
@@ -149,7 +156,7 @@ class _StudentPhoneAuthState extends State<StudentPhoneAuth> {
                 ),
                 SizedBox(height: 2.h),
                 Text(
-                  "Enter your unique id given by your organisation to verify.",
+                  "Enter your unique id given by your organisation to verify yourself.",
                   style: TextStyle(
                     color: const Color(0xFF8B8B8B),
                     fontSize: 17.sp,
@@ -161,7 +168,7 @@ class _StudentPhoneAuthState extends State<StudentPhoneAuth> {
                   validator: (value) {
                     if (value!.isEmpty) {
                       return "Enter your Phone number";
-                    } else if (value.length != 5) {
+                    } else if (value.length != widget.ordinateIdLength) {
                       return "Enter valid Phone number";
                     } else {
                       return null;
@@ -195,7 +202,7 @@ class _StudentPhoneAuthState extends State<StudentPhoneAuth> {
                   keyboardType: TextInputType.number,
                   inputFormatters: [
                     FilteringTextInputFormatter.digitsOnly,
-                    LengthLimitingTextInputFormatter(5),
+                    LengthLimitingTextInputFormatter(widget.ordinateIdLength),
                   ],
                   maxLengthEnforcement: MaxLengthEnforcement.enforced,
                   onChanged: (value) {
@@ -205,6 +212,7 @@ class _StudentPhoneAuthState extends State<StudentPhoneAuth> {
                     });
                   },
                 ),
+                SizedBox(height: 36.h),
                 isSendingOTP
                     ? Center(
                       child: SizedBox(
@@ -240,9 +248,30 @@ class _StudentPhoneAuthState extends State<StudentPhoneAuth> {
                           if (widget.ordinatesList.contains(ordinateID)) {
                             getOrdinateData(ordinateID);
                           } else {
-                            print("This is an invalid ID");
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                backgroundColor: const Color.fromARGB(
+                                  255,
+                                  151,
+                                  101,
+                                  0,
+                                ),
+                                elevation: 0,
+                                content: Row(
+                                  children: [
+                                    Text(
+                                      "ID not Found!",
+                                      style: TextStyle(
+                                        fontSize: 15.sp,
+                                        color: Colors.white,
+                                        fontFamily: "Montserrat-SemiBold",
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
                           }
-                          // sendOTPViaFireBase();
                         }
                       },
                       child: Padding(
@@ -274,7 +303,6 @@ class _StudentPhoneAuthState extends State<StudentPhoneAuth> {
                         ),
                       ),
                     ),
-                SizedBox(height: 20.h),
               ],
             ),
           ),

@@ -5,54 +5,65 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pinput/pinput.dart';
-import 'package:swift/pages/driverSection/Home/homePage.dart';
-import 'package:swift/pages/studentSection.dart/pages/studentHomePage.dart';
-import 'package:swift/pages/studentSection.dart/studentAuth/studentPhoneAuth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:swift/deltaFiles/appControl.dart';
+import 'package:swift/pages/adminSection/adminAuth/adminPhoneAuth.dart';
+import 'package:swift/pages/adminSection/adminOnboarding/adminOnboardName.dart';
+import 'package:swift/pages/adminSection/adminPages/adminHomePage.dart';
 
-class StudentOTPAuth extends StatefulWidget {
+class AdminOTPAuth extends StatefulWidget {
   final String phoneNo;
-
   final String countryCode;
 
-  const StudentOTPAuth({
+  const AdminOTPAuth({
     super.key,
     required this.phoneNo,
     required this.countryCode,
   });
 
   @override
-  State<StudentOTPAuth> createState() => _StudentOTPAuthState();
+  State<AdminOTPAuth> createState() => _AdminOTPAuthState();
 }
 
-class _StudentOTPAuthState extends State<StudentOTPAuth> {
+class _AdminOTPAuthState extends State<AdminOTPAuth> {
   final controller = TextEditingController();
   final focusNode = FocusNode();
-  var verificationCode;
   bool isVerifyingOTP = false;
 
   void otpCheck(val) {
     if (val.length == 6) {
       verifyOTPViaFirebase();
-      // Navigator.of(context).push(
-      //   PageTransition(
-      //       type: PageTransitionType.rightToLeftJoined,
-      //       childCurrent: widget,
-      //       duration: const Duration(milliseconds: 120),
-      //       reverseDuration: const Duration(milliseconds: 120),
-      //       child: const OnboardingDetails()),
-      // );
     }
   }
 
   Future<List<String>> getAllDocumentNames() async {
     final collectionReference = FirebaseFirestore.instance.collection(
-      'DriversData',
+      'Clients',
     );
     final querySnapshot = await collectionReference.get();
 
     final documentNames = querySnapshot.docs.map((doc) => doc.id).toList();
 
     return documentNames;
+  }
+
+  Future<void> setPreference(String userID, String userType) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('loggedUserID', userID);
+    await prefs.setString('loggedUserType', userType);
+  }
+
+  Future<void> getPreference() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? loggedUserID = prefs.getString('loggedUserID');
+    String? loggedUserType = prefs.getString('loggedUserType');
+
+    if (loggedUserID != null && mounted) {
+      setState(() {
+        AppControl.loggedUserID = loggedUserID;
+        AppControl.loggedUserType = loggedUserType ?? ''; // Handle null case
+      });
+    }
   }
 
   FirebaseAuth auth = FirebaseAuth.instance;
@@ -62,36 +73,31 @@ class _StudentOTPAuthState extends State<StudentOTPAuth> {
     });
     try {
       PhoneAuthCredential credential = PhoneAuthProvider.credential(
-        verificationId: StudentPhoneAuth.verificationId,
-        smsCode: verificationCode,
+        verificationId: AdminPhoneAuth.verificationId,
+        smsCode: controller.text.trim(),
       );
 
-      // Sign the user in (or link) with the credential
       await auth.signInWithCredential(credential);
       List<String> documentNames = await getAllDocumentNames();
 
-      if (documentNames.contains(widget.phoneNo)) {
+      if (documentNames.contains("CLIENT_${widget.phoneNo}")) {
         setState(() {
           isVerifyingOTP = false;
         });
 
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
+          MaterialPageRoute(builder: (context) => const AdminHomePage()),
           (route) => false,
         );
 
-        // setPreference(widget.phoneNo);
-        // getPreference();
+        await setPreference("CLIENT_${widget.phoneNo}", 'admin');
       } else {
-        // setState(() {
-        //   OnboradingData.phone = widget.phoneNo;
-        //   OnboradingData.countryCodeInWords =
-        //       OnboardingPhonePage.countryCodeVar;
-        // });
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => const StudentHomePage()),
+          MaterialPageRoute(
+            builder: (context) => AdminOnboardName(phoneNo: widget.phoneNo),
+          ),
           (route) => false,
         );
       }
@@ -99,7 +105,7 @@ class _StudentOTPAuthState extends State<StudentOTPAuth> {
       setState(() {
         isVerifyingOTP = false;
       });
-      // ignore: use_build_context_synchronously
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: const Color(0xFFc61a09),
@@ -212,7 +218,6 @@ class _StudentOTPAuthState extends State<StudentOTPAuth> {
             SizedBox(height: 28.h),
             Pinput(
               onChanged: (value) {
-                verificationCode = value;
                 otpCheck(value);
               },
               length: 6,

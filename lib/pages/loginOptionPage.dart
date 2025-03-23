@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:swift/pages/studentSection.dart/studentAuth/InstituteSelection.dart';
+import 'package:swift/pages/adminSection/adminAuth/adminPhoneAuth.dart';
+import 'package:swift/pages/ordinateSection.dart/ordinateAuth/clientSelection.dart';
 
 class LoginOptionPage extends StatefulWidget {
   const LoginOptionPage({super.key});
@@ -13,15 +13,39 @@ class LoginOptionPage extends StatefulWidget {
 }
 
 class _LoginOptionPageState extends State<LoginOptionPage> {
-  void showToastMessage(String message) => Fluttertoast.showToast(
-    msg: message,
-    backgroundColor: Colors.black38,
-    textColor: Colors.white,
-    fontSize: 16.0,
-    toastLength: Toast.LENGTH_SHORT,
-    timeInSecForIosWeb: 2,
-    gravity: ToastGravity.BOTTOM,
-  );
+  void showOptions() {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      backgroundColor: Colors.white,
+      context: context,
+      builder: (context) {
+        return Container(
+          height: 300,
+          width: double.infinity,
+          child: Column(
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    PageTransition(
+                      type: PageTransitionType.rightToLeftJoined,
+                      childCurrent: widget,
+                      duration: const Duration(milliseconds: 120),
+                      reverseDuration: const Duration(milliseconds: 120),
+                      child: const AdminPhoneAuth(),
+                    ),
+                  );
+                },
+                child: Text("Admin"),
+              ),
+              ElevatedButton(onPressed: () {}, child: Text("Moderator")),
+              ElevatedButton(onPressed: () {}, child: Text("Driver")),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,10 +64,7 @@ class _LoginOptionPageState extends State<LoginOptionPage> {
             height: 660.h,
             width: double.infinity,
             decoration: BoxDecoration(
-              image: const DecorationImage(
-                image: AssetImage("assets/images/sampleImage.jpg"),
-                fit: BoxFit.cover,
-              ),
+              color: Color(0xFF266FEF),
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(24.r),
                 bottomRight: Radius.circular(24.r),
@@ -61,14 +82,14 @@ class _LoginOptionPageState extends State<LoginOptionPage> {
                     childCurrent: widget,
                     duration: const Duration(milliseconds: 120),
                     reverseDuration: const Duration(milliseconds: 120),
-                    child: const InstituteSelection(),
+                    child: const ClientSelection(),
                   ),
                 );
               },
               child: Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: Colors.black,
+                  color: Color(0xFF266FEF),
                   borderRadius: BorderRadius.circular(16.r),
                 ),
                 child: Padding(
@@ -90,7 +111,7 @@ class _LoginOptionPageState extends State<LoginOptionPage> {
           SizedBox(height: 12.h),
           GestureDetector(
             onTap: () {
-              showToastMessage("Under Process");
+              showOptions();
             },
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 12.w),
