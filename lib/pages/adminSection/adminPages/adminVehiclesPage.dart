@@ -4,8 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:swift/deltaFiles/appControl.dart';
-import 'package:swift/pages/adminSection/adminExtras/addModerator.dart';
-import 'package:swift/pages/adminSection/adminExtras/addOrdinate.dart';
 import 'package:swift/pages/adminSection/adminExtras/addVehicle.dart';
 
 class AdminVehiclesPage extends StatefulWidget {

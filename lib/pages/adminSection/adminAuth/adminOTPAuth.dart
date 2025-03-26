@@ -10,6 +10,7 @@ import 'package:swift/deltaFiles/appControl.dart';
 import 'package:swift/pages/adminSection/adminAuth/adminPhoneAuth.dart';
 import 'package:swift/pages/adminSection/adminOnboarding/adminOnboardName.dart';
 import 'package:swift/pages/adminSection/adminPages/adminHomePage.dart';
+import 'package:swift/pages/adminSection/adminPages/adminNav.dart';
 
 class AdminOTPAuth extends StatefulWidget {
   final String phoneNo;
@@ -87,9 +88,10 @@ class _AdminOTPAuthState extends State<AdminOTPAuth> {
 
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => const AdminHomePage()),
+          MaterialPageRoute(builder: (context) => const AdminNav()),
           (route) => false,
         );
+        await getPreference();
 
         await setPreference("CLIENT_${widget.phoneNo}", 'admin');
       } else {

@@ -52,6 +52,8 @@ class _AdminOrdinatesPageState extends State<AdminOrdinatesPage> {
         var data = snapshot.data!.data()!;
 
         String clientName = data["ClientName"] ?? "";
+        String clientID = data["ClientID"] ?? "";
+        List ordinates = data["Ordinates"] ?? [];
 
         return Scaffold(
           backgroundColor: Colors.white,
@@ -71,7 +73,14 @@ class _AdminOrdinatesPageState extends State<AdminOrdinatesPage> {
 
                 ElevatedButton(
                   onPressed: () {
-                    navigateToPage(context, AddOrdinate(), widget);
+                    navigateToPage(
+                      context,
+                      AddOrdinate(
+                        organisationID: clientID,
+                        organisationName: clientName,
+                      ),
+                      widget,
+                    );
                   },
                   child: Text("Add Ordinate"),
                 ),

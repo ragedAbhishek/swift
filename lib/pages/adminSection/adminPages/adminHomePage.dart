@@ -53,12 +53,12 @@ class _AdminHomePageState extends State<AdminHomePage> {
 
         String clientName = data["ClientName"] ?? "";
 
-        return Scaffold(
-          backgroundColor: Colors.white,
-          body: Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
+        return SafeArea(
+          child: Scaffold(
+            backgroundColor: Colors.white,
+            body: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
                   "$clientName\nHomepage",
