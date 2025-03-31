@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:swift/pages/moderatorSection/moderatorAuth/moderatorAuth.dart';
 import 'package:swift/pages/ordinateSection.dart/ordinateAuth/ordinatePhoneAuth.dart';
 
 class ClientSelection extends StatefulWidget {
-  const ClientSelection({super.key});
+  final String userType;
+  const ClientSelection({super.key, required this.userType});
 
   @override
   State<ClientSelection> createState() => _ClientSelectionState();
@@ -153,26 +155,44 @@ class _ClientSelectionState extends State<ClientSelection> {
                           String clientID = userData["ClientID"] ?? '';
                           String clientType = userData["ClientType"] ?? '';
                           List ordinatesList = userData["Ordinates"] ?? [];
+                          List moderatorList = userData["Moderators"] ?? [];
                           int ordinateIdLength =
                               userData["OrdinateIdLength"] ?? 0;
 
                           return GestureDetector(
                             onTap: () {
-                              Navigator.of(context).push(
-                                PageTransition(
-                                  type: PageTransitionType.rightToLeftJoined,
-                                  childCurrent: widget,
-                                  duration: const Duration(milliseconds: 120),
-                                  reverseDuration: const Duration(
-                                    milliseconds: 120,
+                              if (widget.userType == "ordinate") {
+                                Navigator.of(context).push(
+                                  PageTransition(
+                                    type: PageTransitionType.rightToLeftJoined,
+                                    childCurrent: widget,
+                                    duration: const Duration(milliseconds: 120),
+                                    reverseDuration: const Duration(
+                                      milliseconds: 120,
+                                    ),
+                                    child: OrdinatePhoneAuth(
+                                      clientID: clientID,
+                                      ordinatesList: ordinatesList,
+                                      ordinateIdLength: ordinateIdLength,
+                                    ),
                                   ),
-                                  child: OrdinatePhoneAuth(
-                                    clientID: clientID,
-                                    ordinatesList: ordinatesList,
-                                    ordinateIdLength: ordinateIdLength,
+                                );
+                              } else {
+                                Navigator.of(context).push(
+                                  PageTransition(
+                                    type: PageTransitionType.rightToLeftJoined,
+                                    childCurrent: widget,
+                                    duration: const Duration(milliseconds: 120),
+                                    reverseDuration: const Duration(
+                                      milliseconds: 120,
+                                    ),
+                                    child: ModeratorPhoneAuth(
+                                      clientId: clientID,
+                                      moderatorList: moderatorList,
+                                    ),
                                   ),
-                                ),
-                              );
+                                );
+                              }
                             },
                             child: ListTile(
                               contentPadding: EdgeInsets.symmetric(
