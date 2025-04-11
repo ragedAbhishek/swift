@@ -78,10 +78,10 @@ class _AdminOnboardingOrgPhotoState extends State<AdminOnboardingOrgPhoto> {
     }
   }
 
-  Future<void> _cropImage(var _pickedFile) async {
-    if (_pickedFile != null) {
+  Future<void> _cropImage(var pickedFile) async {
+    if (pickedFile != null) {
       final croppedFile = await ImageCropper().cropImage(
-        sourcePath: _pickedFile!.path,
+        sourcePath: pickedFile!.path,
         compressFormat: ImageCompressFormat.jpg,
         compressQuality: 40,
         aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),

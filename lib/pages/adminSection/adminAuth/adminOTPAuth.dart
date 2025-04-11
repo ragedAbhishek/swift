@@ -9,7 +9,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swift/deltaFiles/appControl.dart';
 import 'package:swift/pages/adminSection/adminAuth/adminPhoneAuth.dart';
 import 'package:swift/pages/adminSection/adminOnboarding/adminOnboardName.dart';
-import 'package:swift/pages/adminSection/adminPages/adminHomePage.dart';
 import 'package:swift/pages/adminSection/adminPages/adminNav.dart';
 
 class AdminOTPAuth extends StatefulWidget {

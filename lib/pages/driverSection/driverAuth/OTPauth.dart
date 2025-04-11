@@ -5,13 +5,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pinput/pinput.dart';
-import 'package:swift/pages/driverSection/Home/homePage.dart';
+// import 'package:swift/pages/driverSection/Home/homePage.dart'; // No longer needed here
 import 'package:swift/pages/driverSection/driverAuth/phoneAuth.dart';
 import 'package:swift/pages/driverSection/onboarding/onboardingDetails.dart';
+import 'package:swift/pages/driverSection/qrScannerPage.dart'; // Import the QR Scanner Page
 
 class DriverOTPAuth extends StatefulWidget {
   final String phoneNo;
-
   final String countryCode;
 
   const DriverOTPAuth({
@@ -33,14 +33,6 @@ class _DriverOTPAuthState extends State<DriverOTPAuth> {
   void otpCheck(val) {
     if (val.length == 6) {
       verifyOTPViaFirebase();
-      // Navigator.of(context).push(
-      //   PageTransition(
-      //       type: PageTransitionType.rightToLeftJoined,
-      //       childCurrent: widget,
-      //       duration: const Duration(milliseconds: 120),
-      //       reverseDuration: const Duration(milliseconds: 120),
-      //       child: const OnboardingDetails()),
-      // );
     }
   }
 
@@ -49,13 +41,12 @@ class _DriverOTPAuthState extends State<DriverOTPAuth> {
       'DriversData',
     );
     final querySnapshot = await collectionReference.get();
-
     final documentNames = querySnapshot.docs.map((doc) => doc.id).toList();
-
     return documentNames;
   }
 
   FirebaseAuth auth = FirebaseAuth.instance;
+
   void verifyOTPViaFirebase() async {
     setState(() {
       isVerifyingOTP = true;
@@ -70,25 +61,25 @@ class _DriverOTPAuthState extends State<DriverOTPAuth> {
       await auth.signInWithCredential(credential);
       List<String> documentNames = await getAllDocumentNames();
 
+      // Check if the widget is still mounted before navigating
+      if (!mounted) return; 
+
       if (documentNames.contains(widget.phoneNo)) {
+        // Driver exists - Navigate to QR Scanner Page
         setState(() {
           isVerifyingOTP = false;
         });
-
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
+          MaterialPageRoute(builder: (context) => const QrScannerPage()), // <-- Changed to QrScannerPage
           (route) => false,
         );
 
-        // setPreference(widget.phoneNo);
-        // getPreference();
       } else {
-        // setState(() {
-        //   OnboradingData.phone = widget.phoneNo;
-        //   OnboradingData.countryCodeInWords =
-        //       OnboardingPhonePage.countryCodeVar;
-        // });
+        // Driver is new - Navigate to Onboarding Details Page
+        setState(() {
+          isVerifyingOTP = false; // Ensure state is updated here too
+        });
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => const OnboardingDetails()),
@@ -96,10 +87,11 @@ class _DriverOTPAuthState extends State<DriverOTPAuth> {
         );
       }
     } catch (e) {
+      // Check if the widget is still mounted before showing Snackbar or setting state
+      if (!mounted) return;
       setState(() {
         isVerifyingOTP = false;
       });
-      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: const Color(0xFFc61a09),

@@ -11,7 +11,7 @@ class OrdinatePhoneAuth extends StatefulWidget {
   final List ordinatesList;
   final int ordinateIdLength;
 
-  OrdinatePhoneAuth({
+  const OrdinatePhoneAuth({
     super.key,
     required this.clientID,
     required this.ordinatesList,

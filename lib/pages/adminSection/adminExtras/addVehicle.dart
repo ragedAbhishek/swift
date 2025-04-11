@@ -256,8 +256,7 @@ class SkillTile extends StatefulWidget {
   final SkillEntry skillEntry;
   final VoidCallback onDelete;
 
-  SkillTile({Key? key, required this.skillEntry, required this.onDelete})
-    : super(key: key);
+  const SkillTile({super.key, required this.skillEntry, required this.onDelete});
 
   @override
   State<SkillTile> createState() => _SkillTileState();
