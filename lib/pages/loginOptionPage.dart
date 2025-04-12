@@ -21,7 +21,7 @@ class _LoginOptionPageState extends State<LoginOptionPage> {
       backgroundColor: Colors.white,
       context: context,
       builder: (context) {
-        return Container(
+        return SizedBox(
           height: 300,
           width: double.infinity,
           child: Column(

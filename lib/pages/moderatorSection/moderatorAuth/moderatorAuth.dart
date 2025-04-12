@@ -10,7 +10,7 @@ class ModeratorPhoneAuth extends StatefulWidget {
   final String clientId;
   final moderatorList;
 
-  ModeratorPhoneAuth({
+  const ModeratorPhoneAuth({
     super.key,
     required this.clientId,
     required this.moderatorList,
